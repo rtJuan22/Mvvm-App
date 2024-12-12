@@ -1,11 +1,12 @@
-package com.juan.mvvmp1.view
+package com.juan.mvvmp1.ui.view
 
 import android.os.Bundle
 import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
+import androidx.core.view.isVisible
 import androidx.lifecycle.Observer
 import com.juan.mvvmp1.databinding.ActivityMainBinding
-import com.juan.mvvmp1.viewmodel.QuoteViewModel
+import com.juan.mvvmp1.ui.viewmodel.QuoteViewModel
 
 class MainActivity : AppCompatActivity() {
 
@@ -18,10 +19,16 @@ class MainActivity : AppCompatActivity() {
         binding = ActivityMainBinding.inflate(layoutInflater)
         setContentView(binding.root)
 
+        quoteViewModel.onCreate()
+
          quoteViewModel.quoteModel.observe(this, Observer { currentQuote ->
              binding.tvQuote.text = currentQuote.quote
              binding.tvAuthor.text = currentQuote.author
          })
+
+           quoteViewModel.isLoading.observe(this, Observer{
+               binding.pgBar.isVisible = it
+           })
              binding.viewContainer.setOnClickListener {quoteViewModel.randomQuote()}
         }
     }
